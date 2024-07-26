@@ -64,7 +64,8 @@ String 클래스는 Object 클래스에서 상속받은 equals 메서드를 오�
 - `equals`만 잘 재정의하면 모든 객체의 동등성이 보장될 것 같지만, 아쉽게도 모든 객체가 그렇지는 않음
 - 이 예외는 hash 값을 사용하는 `Hash Collection` 자료구조 (HashMap, HashSet, HashTable) 때문에 일어남
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/14bc23a6-8ef2-4f06-80e4-252497aa3f34/d94ec2f6-fff7-44e6-bbbe-d6f6b26b921e/Untitled.png)
+![image](https://github.com/user-attachments/assets/12878608-14df-4db4-98ec-f3bb2ce870d8)
+
 
 즉, `hsahCode` 값이 같아야만 `equals 메소드`로 객체 비교를 수행함.
 
