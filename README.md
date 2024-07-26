@@ -17,7 +17,7 @@
 <details>
   <summary>2주차</summary>
   
-  - 
+  - JVM의구조 - RunTime Data Area
 
 </details>
 
@@ -27,7 +27,7 @@
   - GC
   - Comparator, Comparable
   - 자바 예외처리
-  - JVM 시리즈 2 - Class Loader
+  - JVM의구조 - Class Loader
   - 빌더 패턴
 
 </details>
