@@ -5,20 +5,40 @@
 - 공부한 것 깃헙에 업로드
 
 ## 📚 학습 내용
-> 1주차
-- Gradle
-- JDK/JRE/JVM
-- IoC / DI
-> 2주차
--
-> 3주차
-- GC
-- Comparator, Comparable
-- 자바 예외처리
-- JVM 시리즈 2 - Class Loader
-- 빌더 패턴
-> 4주차
-- 스프링 REST api
-- 자바 어노테이션 @
-- 스프링MVC 에서의 전역 예외 처리 - ControllerAdvice
-- 동등성과 동일성 - equals()와 hashCode()
+<details>
+  <summary>1주차</summary>
+  
+  - Gradle
+  - JDK/JRE/JVM
+  - IoC / DI
+
+</details>
+
+<details>
+  <summary>2주차</summary>
+  
+  - 
+
+</details>
+
+<details>
+  <summary>3주차</summary>
+  
+  - GC
+  - Comparator, Comparable
+  - 자바 예외처리
+  - JVM 시리즈 2 - Class Loader
+  - 빌더 패턴
+
+</details>
+
+<details>
+  <summary>4주차</summary>
+  
+  - 스프링 REST API
+  - 자바 어노테이션 @
+  - 스프링MVC 에서의 전역 예외 처리 - ControllerAdvice
+  - 동등성과 동일성 - equals()와 hashCode()
+
+</details>
+
