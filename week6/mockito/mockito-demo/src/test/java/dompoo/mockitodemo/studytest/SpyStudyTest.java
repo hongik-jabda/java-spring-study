@@ -1,90 +1,60 @@
 package dompoo.mockitodemo.studytest;
 
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import dompoo.mockitodemo.code.*;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 
 @Slf4j
 public class SpyStudyTest {
 	
 	@Test
-	void testWithoutMock() {
-	    //given
-		DemoDomain demoDomain = new DemoDomain();
-		DemoService service = new DemoService(demoDomain);
-		DemoController controller = new DemoController(service);
+	@DisplayName("상품 저장 테스트 - 모킹 X")
+	void productSaveTestWithoutMock() {
+		//given
+		Product product = Product.builder()
+				.name("아메리카노")
+				.cost(5000)
+				.build();
+		
+		MailSendFactory mailFactory = new MailSendFactory();
+		ProductRepository repository = new ProductRepository();
+		ProductService service = new ProductService(mailFactory, repository);
+		ProductController controller = new ProductController(service);
 		
 		//when
-		String result = controller.fun();
+		Product result = controller.saveProduct(product);
 		
 		//then
-		assertThat(result).isEqualTo("소용돌이");
+		assertThat(result.getName()).isEqualTo("아메리카노");
+		assertThat(result.getCost()).isEqualTo(5000);
 	}
 	
 	@Test
-	void testWithMockLikeClassist() {
+	@DisplayName("상품 저장 테스트 - 서비스 스파이 모킹")
+	void productSaveTestWithSpy() {
 		//given
-		DemoDomain realDemoDomain = new DemoDomain();
-		DemoDomain mockDomain = spy(realDemoDomain);
-		DemoService service = new DemoService(mockDomain);
-		DemoController controller = new DemoController(service);
-		doNothing().when(mockDomain).sendEmail();
+		Product product = Product.builder()
+				.name("아메리카노")
+				.cost(5000)
+				.build();
+		
+		MailSendFactory mailFactory = spy(MailSendFactory.class);
+		ProductRepository repository = new ProductRepository();
+		ProductService service = new ProductService(mailFactory, repository);
+		ProductController controller = new ProductController(service);
+		
+		doNothing().when(mailFactory).send();
 		
 		//when
-		String result = controller.fun();
+		Product result = controller.saveProduct(product);
 		
 		//then
-		assertThat(result).isEqualTo("소용돌이");
-		verify(mockDomain, times(1)).sendEmail();
-	}
-	
-	@RequiredArgsConstructor
-	private class DemoController {
-		
-		private final DemoService demoService;
-		
-		public String fun() {
-			log.info("컨트롤러 메서드 호출");
-			String result = demoService.fun();
-			return "소" + result;
-		}
-	}
-	
-	@RequiredArgsConstructor
-	private class DemoService {
-		
-		private final DemoDomain demoDomain;
-		
-		public String fun() {
-			log.info("서비스 메서드 호출");
-			String result = demoDomain.fun();
-			demoDomain.sendEmail();
-			return "용" + result;
-		}
-	}
-	
-	public class DemoDomain {
-		
-		public DemoDomain() {
-		}
-		
-		public String fun() {
-			log.info("도메인 메서드 호출");
-			return "돌이";
-		}
-		
-		public void sendEmail() {
-			log.info("메일 보내는 중...");
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-			log.info("메일 보내기 완료");
-		}
+		assertThat(result.getName()).isEqualTo("아메리카노");
+		assertThat(result.getCost()).isEqualTo(5000);
 	}
 }

@@ -1,102 +1,80 @@
 package dompoo.mockitodemo.studytest;
 
-import lombok.RequiredArgsConstructor;
+import dompoo.mockitodemo.code.*;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @Slf4j
 public class MockStudyTest {
 	
 	@Test
-	void testWithoutMock() {
+	@DisplayName("상품 저장 테스트 - 모킹 X")
+	void productSaveTestWithoutMock() {
 	    //given
-		DemoDomain demoDomain = new DemoDomain();
-		MailDomain mailDomain = new MailDomain();
-		DemoService service = new DemoService(demoDomain, mailDomain);
-		DemoController controller = new DemoController(service);
+		Product product = Product.builder()
+				.name("아메리카노")
+				.cost(5000)
+				.build();
+		
+		MailSendFactory mailFactory = new MailSendFactory();
+		ProductRepository repository = new ProductRepository();
+		ProductService service = new ProductService(mailFactory, repository);
+		ProductController controller = new ProductController(service);
 		
 		//when
-		String result = controller.fun();
+		Product result = controller.saveProduct(product);
 		
 		//then
-		assertThat(result).isEqualTo("소용돌이");
+		assertThat(result.getName()).isEqualTo("아메리카노");
+		assertThat(result.getCost()).isEqualTo(5000);
 	}
 	
 	@Test
-	void testWithMockLikeMockist() {
+	@DisplayName("상품 저장 테스트 - 서비스 모킹")
+	void productSaveTestWithMockLikeMockist() {
 		//given
-		DemoService mockService = mock(DemoService.class);
-		DemoController controller = new DemoController(mockService);
-		when(mockService.fun()).thenReturn("용돌이");
+		Product product = Product.builder()
+				.name("아메리카노")
+				.cost(5000)
+				.build();
+		
+		ProductService mockService = mock(ProductService.class);
+		ProductController controller = new ProductController(mockService);
+		
+		when(mockService.saveProduct(any(Product.class)))
+				.thenReturn(product);
 		
 		//when
-		String result = controller.fun();
+		Product result = controller.saveProduct(product);
 		
 		//then
-		assertThat(result).isEqualTo("소용돌이");
-		verify(mockService, times(1)).fun();
+		assertThat(result.getName()).isEqualTo("아메리카노");
+		assertThat(result.getCost()).isEqualTo(5000);
 	}
 	
 	@Test
-	void testWithMockLikeClassist() {
+	@DisplayName("상품 저장 테스트 - 메일팩토리 모킹")
+	void productSaveTestWithMockLikeClassist() {
 		//given
-		DemoDomain demoDomain = new DemoDomain();
-		MailDomain mailDomain = mock(MailDomain.class);
-		DemoService service = new DemoService(demoDomain, mailDomain);
-		DemoController controller = new DemoController(service);
+		Product product = Product.builder()
+				.name("아메리카노")
+				.cost(5000)
+				.build();
+		
+		MailSendFactory mailFactory = mock(MailSendFactory.class);
+		ProductRepository repository = new ProductRepository();
+		ProductService service = new ProductService(mailFactory, repository);
+		ProductController controller = new ProductController(service);
 		
 		//when
-		String result = controller.fun();
+		Product result = controller.saveProduct(product);
 		
 		//then
-		assertThat(result).isEqualTo("소용돌이");
-	}
-	
-	@RequiredArgsConstructor
-	private class DemoController {
-		
-		private final DemoService demoService;
-		
-		public String fun() {
-			log.info("컨트롤러 메서드 호출");
-			String result = demoService.fun();
-			return "소" + result;
-		}
-	}
-	
-	@RequiredArgsConstructor
-	private class DemoService {
-		
-		private final DemoDomain demoDomain;
-		private final MailDomain mailDomain;
-		
-		public String fun() {
-			log.info("서비스 메서드 호출");
-			String result = demoDomain.fun();
-			mailDomain.sendEmail();
-			return "용" + result;
-		}
-	}
-	
-	private class DemoDomain {
-		public String fun() {
-			log.info("도메인 메서드 호출");
-			return "돌이";
-		}
-	}
-	
-	private class MailDomain {
-		public void sendEmail() {
-			log.info("메일 보내는 중...");
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-			log.info("메일 보내기 완료");
-		}
+		assertThat(result.getName()).isEqualTo("아메리카노");
+		assertThat(result.getCost()).isEqualTo(5000);
 	}
 }
