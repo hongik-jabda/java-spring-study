@@ -42,3 +42,22 @@
 
 </details>
 
+<details>
+  <summary>5주차</summary>
+  
+  - instanceOf
+  - 싱글톤 패턴
+  - junit, assertj
+
+</details>
+
+<details>
+  <summary>6주차</summary>
+  
+  - Mocking
+  - 직렬화와 역직렬화
+  - Enum 클래스
+  - c++과 자바의 차이 - 객체 할당을 중심으로
+  - 객체지향 SOLID
+
+</details>
